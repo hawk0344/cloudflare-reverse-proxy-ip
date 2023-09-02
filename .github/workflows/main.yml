@@ -20,7 +20,7 @@ jobs:
 
     - name: Install requests library
       run: |
-        pip install requests zipfile
+        pip install requests
 
     - name: Download File
       run: python main.py  # 这里 main.py 负责下载文件
