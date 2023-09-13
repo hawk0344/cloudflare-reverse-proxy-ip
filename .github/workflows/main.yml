@@ -27,10 +27,10 @@ jobs:
 
     - name: Commit and Push
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.email "action-$(cat /dev/urandom | tr -dc 'a-z0-9' | head -c 5)@github.com"
+        git config --local user.name "GitHub Action $(cat /dev/urandom | tr -dc 'A-Za-z0-9' | head -c 5)"
         git add .
-        git commit -m "Downloaded file on, $(date "+%Y/%m/%d")"
+        git commit -m "Downloaded file on $(date "+%Y/%m/%d %H:%M:%S")"
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{github.repository}}.git
         git push
 
