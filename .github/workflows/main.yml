@@ -20,7 +20,7 @@ jobs:
 
     - name: Install requests library
       run: |
-        pip install requests
+        pip install requests feedparser
 
     - name: Download File
       run: python main.py  # 这里 main.py 负责下载文件
