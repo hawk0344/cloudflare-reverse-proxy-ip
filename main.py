@@ -5,6 +5,39 @@ import zipfile
 import shutil
 import os
 
+import feedparser
+
+
+def extract_ip_port_from_rss(url, output_file):
+  try:
+    # 解析RSS订阅
+    feed = feedparser.parse(url)
+
+    # 打开文件以写入IP和Port信息
+    with open(output_file, 'a') as f:
+      # 遍历每个RSS项
+      for entry in feed.entries:
+        # 提取标题中的IP和Port信息
+        title = entry.title
+
+        # 排除包含特定文本的项
+        if "Subscribe Link" in title:
+          continue
+
+        ip_start = title.find("[IP]") + len("[IP]")
+        ip_end = title.find("[Port]")
+        ip = title[ip_start:ip_end].strip()
+        port_start = title.find("[Port]") + len("[Port]")
+        port_end = title.find("[Latency]")
+        port = title[port_start:port_end].strip()
+
+        # 写入IP和Port到文件中
+        # f.write(f"{ip} {port}\n")
+
+    print(f"提取完成，并已写入文件：{output_file}")
+  except Exception as e:
+    print(f"发生错误：{str(e)}")
+
 
 def download_and_convert(url, output_file):
   try:
@@ -181,3 +214,8 @@ if __name__ == "__main__":
     url = 'https://sub.cfno1.eu.org/pure'
     output_file = 'merge-ip.txt'
     download_and_convert(url, output_file)
+    # 指定RSS订阅的URL和输出文件名
+    rss_url = "https://rsshub.app/telegram/channel/cf_noip?searchQuery=IP"
+    # output_file = "ip_port.txt"
+    # 调用函数
+    extract_ip_port_from_rss(rss_url, output_file)
