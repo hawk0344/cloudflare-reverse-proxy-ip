@@ -32,7 +32,7 @@ def extract_ip_port_from_rss(url, output_file):
         port = title[port_start:port_end].strip()
 
         # 写入IP和Port到文件中
-        # f.write(f"{ip} {port}\n")
+        f.write(f"{ip} {port}\n")
 
     print(f"提取完成，并已写入文件：{output_file}")
   except Exception as e:
