@@ -8,6 +8,17 @@ import os
 import feedparser
 
 
+def remove_duplicate_lines(file_path):
+  with open(file_path, 'r') as file:
+    lines = file.readlines()
+
+  # 使用集合(set)来去除重复行
+  unique_lines = set(lines)
+
+  with open(file_path, 'w') as file:
+    file.writelines(unique_lines)
+
+
 def extract_ip_port_from_rss(url, output_file):
   try:
     # 解析RSS订阅
@@ -32,7 +43,7 @@ def extract_ip_port_from_rss(url, output_file):
         port = title[port_start:port_end].strip()
 
         # 写入IP和Port到文件中
-        f.write(f"{ip} {port}\n")
+        f.write(f"{ip}  {port}\n")
 
     print(f"提取完成，并已写入文件：{output_file}")
   except Exception as e:
@@ -55,7 +66,7 @@ def download_and_convert(url, output_file):
       parts = line.split(',')
       if len(parts) == 3:
         ip, port, _ = parts
-        converted_data.append(f"{ip} {port}")
+        converted_data.append(f"{ip}  {port}")
 
     # 追加转换后的数据到输出文件
     with open(output_file, 'a') as outfile:
@@ -219,3 +230,6 @@ if __name__ == "__main__":
     # output_file = "ip_port.txt"
     # 调用函数
     extract_ip_port_from_rss(rss_url, output_file)
+    # 使用示例，相同文件名作为输入和输出
+    # file_path = 'merge-ip.txt'
+    remove_duplicate_lines(output_file)
